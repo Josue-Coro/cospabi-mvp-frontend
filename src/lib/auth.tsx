@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
+import { toast } from "sonner"
 
 import { api, guardarToken, obtenerToken } from "@/lib/api"
+
+const MINUTOS_INACTIVIDAD = 15
 
 export type Usuario = {
   id_usuario_admin: number
@@ -34,6 +37,34 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       .catch(() => guardarToken(null))
       .finally(() => setCargando(false))
   }, [])
+
+  // Si la API responde 401 (token vencido) se vuelve al login
+  useEffect(() => {
+    const alExpirar = () => setUsuario(null)
+    window.addEventListener("sesion-expirada", alExpirar)
+    return () => window.removeEventListener("sesion-expirada", alExpirar)
+  }, [])
+
+  // RNF-04: cierra la sesión tras 15 minutos sin actividad
+  useEffect(() => {
+    if (!usuario) return
+    let temporizador = 0
+    const reiniciar = () => {
+      window.clearTimeout(temporizador)
+      temporizador = window.setTimeout(() => {
+        guardarToken(null)
+        setUsuario(null)
+        toast.info("Su sesión se cerró por 15 minutos de inactividad")
+      }, MINUTOS_INACTIVIDAD * 60_000)
+    }
+    const eventos = ["mousemove", "keydown", "click", "touchstart", "scroll"]
+    eventos.forEach((evento) => window.addEventListener(evento, reiniciar, { passive: true }))
+    reiniciar()
+    return () => {
+      window.clearTimeout(temporizador)
+      eventos.forEach((evento) => window.removeEventListener(evento, reiniciar))
+    }
+  }, [usuario])
 
   async function iniciarSesion(nombreUsuario: string, contrasena: string) {
     const respuesta = await api<{ access_token: string }>("/auth/login", {

@@ -34,6 +34,11 @@ export async function api<T>(ruta: string, opciones: RequestInit = {}): Promise<
   })
 
   const datos = await respuesta.json().catch(() => null)
+  if (respuesta.status === 401 && token) {
+    // El token venció: se avisa a la sesión para volver al login
+    guardarToken(null)
+    window.dispatchEvent(new Event("sesion-expirada"))
+  }
   if (!respuesta.ok) {
     // FastAPI devuelve el error en "detail" (texto o lista de validaciones)
     const detalle = datos?.detail

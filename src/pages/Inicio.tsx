@@ -1,33 +1,35 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useSesion } from "@/lib/auth"
+import { Link } from "react-router-dom"
 
-// Los 6 modulos del sistema (las pantallas se agregan en los siguientes pasos)
-const MODULOS = [
-  { nombre: "Administración", detalle: "Usuarios, roles, caja y bitácora" },
-  { nombre: "Configuración", detalle: "Tarifas, tipos de cargo, medidores y periodos" },
-  { nombre: "Atención al Cliente", detalle: "Personas, socios, crédito de inscripción y pagos" },
-  { nombre: "Operaciones", detalle: "Rutas, lecturas, avisos y cargos extra" },
-  { nombre: "Facturación", detalle: "Facturas emitidas al cobrar" },
-  { nombre: "Reportes", detalle: "Caja, morosidad, pagos del portal e inscripción" },
-]
+import { useSesion } from "@/lib/auth"
+import { menuDelRol } from "@/lib/menu"
 
 export default function Inicio() {
   const { usuario } = useSesion()
+  // Accesos directos a lo que el rol puede usar, agrupados por módulo
+  const secciones = menuDelRol(usuario?.rol ?? "").filter((s) => s.titulo)
 
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-semibold">Bienvenido, {usuario?.nombre}</h1>
-        <p className="text-muted-foreground">Rol: {usuario?.rol}</p>
+        <p className="text-muted-foreground">
+          Rol: {usuario?.rol} · Sistema de gestión de la Cooperativa de Agua Potable COSPABI R.L.
+        </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {MODULOS.map((modulo) => (
-          <Card key={modulo.nombre}>
-            <CardHeader>
-              <CardTitle>{modulo.nombre}</CardTitle>
-              <CardDescription>{modulo.detalle}</CardDescription>
-            </CardHeader>
-          </Card>
+        {secciones.map((seccion) => (
+          <div key={seccion.titulo} className="rounded-xl border bg-background p-4">
+            <h2 className="mb-2 font-semibold">{seccion.titulo}</h2>
+            <ul className="space-y-1">
+              {seccion.items.map((item) => (
+                <li key={item.ruta}>
+                  <Link to={item.ruta} className="flex items-center gap-2 text-sm text-primary hover:underline">
+                    <item.icono className="size-4" /> {item.etiqueta}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
       </div>
     </div>
