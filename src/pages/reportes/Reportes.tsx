@@ -58,7 +58,11 @@ function TablaPagos({ pagos, conTransaccion }: { pagos: FilaPagoReporte[]; conTr
             <TableCell>{p.periodo}</TableCell>
             <TableCell>{p.metodo}</TableCell>
             <TableCell className="font-mono text-xs">{conTransaccion ? p.id_transaccion : p.cajero}</TableCell>
-            <TableCell>{p.numero_factura ?? "—"}</TableCell>
+            <TableCell>
+              {p.factura_url ? (
+                <a href={p.factura_url} target="_blank" rel="noreferrer" className="text-primary underline">Libélula</a>
+              ) : (p.numero_factura ?? "—")}
+            </TableCell>
             <TableCell className="text-right">{bs(p.monto)}</TableCell>
           </TableRow>
         ))}

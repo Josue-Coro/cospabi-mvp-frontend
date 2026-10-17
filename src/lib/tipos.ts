@@ -109,6 +109,7 @@ export type Pago = {
   metodo_pago_id_metodo_pago: number
   caja_id_caja: number | null
   id_factura: number | null
+  factura_url: string | null
 }
 
 export type Lectura = {
@@ -174,7 +175,21 @@ export type AvisoDetalle = {
     monto_pagado: number
     forma_pago: string | null
     id_factura: number | null
+    factura_url: string | null
   } | null
+  /** Solo en el portal: QR generado que todavía espera la confirmación de Libélula */
+  pago_qr_pendiente?: PagoQr | null
+}
+
+export type PagoQr = {
+  id_pago: number
+  id_aviso: number
+  estado: "PENDIENTE" | "APROBADO" | "EXPIRADO"
+  monto: number
+  qr_url: string | null
+  url_pasarela: string | null
+  codigo_recaudacion: string | null
+  factura_url: string | null
 }
 
 export type CargoExtra = {
@@ -244,4 +259,5 @@ export type FilaPagoReporte = {
   cajero: string
   id_transaccion: string | null
   numero_factura: number | null
+  factura_url: string | null
 }

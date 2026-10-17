@@ -42,6 +42,11 @@ export default function AvisoDetalle() {
             <ReceiptIcon /> Ver factura
           </Link>
         )}
+        {a.pago?.factura_url && (
+          <a href={a.pago.factura_url} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "outline" })}>
+            <ReceiptIcon /> Factura de Libélula
+          </a>
+        )}
         {abierto && <Button variant="destructive" onClick={() => setAnulando(true)}>Anular</Button>}
       </Encabezado>
 
