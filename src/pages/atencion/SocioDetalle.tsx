@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { CATEGORIAS } from "@/lib/catalogos"
 import { enviar, useDatos } from "@/lib/datos"
-import { bs, fecha, fechaHora } from "@/lib/formato"
+import { bs, fecha, fechaHora, horaDesbloqueo } from "@/lib/formato"
 import type { Aviso, CuentaSocio, Cuota, Medidor, Persona, Ruta, Socio } from "@/lib/tipos"
 
 export default function SocioDetalle() {
@@ -210,6 +210,12 @@ function CuentaPortal({ socio }: { socio: Socio }) {
         <div className="mb-3 flex flex-wrap items-center gap-3 text-sm">
           <span>Usuario: <b className="font-mono">{cuenta.datos!.usuario}</b></span>
           <Estado valor={cuenta.datos!.estado ? "ACTIVO" : "INACTIVO"} />
+          {horaDesbloqueo(cuenta.datos!.bloqueado_hasta) && (
+            <span title="Por intentos fallidos. Restablecer la contraseña lo desbloquea.">
+              <Estado valor="BLOQUEADO" />
+              <span className="ml-1 text-xs text-muted-foreground">hasta {horaDesbloqueo(cuenta.datos!.bloqueado_hasta)}</span>
+            </span>
+          )}
           <span className="text-muted-foreground">Último acceso: {fechaHora(cuenta.datos!.ultimo_acceso)}</span>
           <Button size="sm" variant="outline" onClick={() => cambiarEstado(!cuenta.datos!.estado)}>
             {cuenta.datos!.estado ? "Bloquear" : "Habilitar"}

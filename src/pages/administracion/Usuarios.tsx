@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { enviar, useDatos } from "@/lib/datos"
-import { fecha } from "@/lib/formato"
+import { fecha, horaDesbloqueo } from "@/lib/formato"
 import type { Rol, UsuarioDetalle } from "@/lib/tipos"
 
 type Formulario = {
@@ -93,7 +93,15 @@ export default function Usuarios() {
                 <TableCell className="font-mono text-xs">{u.usuario}</TableCell>
                 <TableCell>{u.rol.nombre}</TableCell>
                 <TableCell>{fecha(u.fecha_creacion)}</TableCell>
-                <TableCell><Estado valor={u.estado ? "ACTIVO" : "INACTIVO"} /></TableCell>
+                <TableCell>
+                  <Estado valor={u.estado ? "ACTIVO" : "INACTIVO"} />
+                  {horaDesbloqueo(u.bloqueado_hasta) && (
+                    <span className="ml-1" title="Por intentos fallidos. Restablecer la clave lo desbloquea.">
+                      <Estado valor="BLOQUEADO" />
+                      <span className="ml-1 text-xs text-muted-foreground">hasta {horaDesbloqueo(u.bloqueado_hasta)}</span>
+                    </span>
+                  )}
+                </TableCell>
                 <TableCell className="text-right">
                   <Button variant="ghost" size="sm" onClick={() => abrir(u)}><PencilIcon /> Editar</Button>
                   <Button variant="ghost" size="sm" onClick={() => setClaveDe(u)}><KeyRoundIcon /> Clave</Button>

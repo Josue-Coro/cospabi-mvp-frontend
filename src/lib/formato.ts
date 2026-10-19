@@ -18,6 +18,12 @@ export function fechaHora(valor: string | null | undefined): string {
   return `${fecha(valor)} ${valor.slice(11, 16)}`
 }
 
+/** Hora ('14:57') hasta la que sigue bloqueada una cuenta por intentos fallidos, o null si ya no lo está */
+export function horaDesbloqueo(valor: string | null | undefined): string | null {
+  if (!valor || new Date(valor) <= new Date()) return null
+  return valor.slice(11, 16)
+}
+
 /** Fecha de hoy en formato yyyy-mm-dd para los campos de fecha */
 export function hoyISO(): string {
   const ahora = new Date()

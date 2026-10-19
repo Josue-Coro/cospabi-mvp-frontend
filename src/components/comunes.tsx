@@ -73,6 +73,7 @@ const COLORES_ESTADO: Record<string, string> = {
   ANULADA: "bg-zinc-200 text-zinc-700",
   ACTIVO: "bg-emerald-100 text-emerald-800",
   INACTIVO: "bg-zinc-200 text-zinc-700",
+  BLOQUEADO: "bg-red-100 text-red-800",
   ABIERTA: "bg-sky-100 text-sky-800",
   CERRADA: "bg-zinc-200 text-zinc-700",
 }

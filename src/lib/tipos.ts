@@ -14,6 +14,7 @@ export type UsuarioDetalle = {
   fecha_creacion: string
   rol_id_rol: number
   rol: Rol
+  bloqueado_hasta: string | null
 }
 
 export type Caja = {
@@ -95,6 +96,7 @@ export type CuentaSocio = {
   estado: boolean
   ultimo_acceso: string | null
   socio_id_socio: number
+  bloqueado_hasta: string | null
 }
 
 export type Pago = {
