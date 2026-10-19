@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useSyncExternalStore } from "react"
 import { toast } from "sonner"
 
 import { api } from "@/lib/api"
@@ -27,24 +27,50 @@ export function useDatos<T>(ruta: string | null) {
   return { datos, error, cargando, recargar: () => setVersion((v) => v + 1) }
 }
 
-/** Envía datos a la API (POST/PUT) y muestra un mensaje de éxito o de error. */
+// Envíos que esperan respuesta de la API. Sirve para no mandar dos veces la misma
+// operación (doble clic, o varios clics mientras Render despierta) y para que los
+// botones se desactiven mientras tanto (useEnviando).
+const enCurso = new Set<string>()
+const oyentes = new Set<() => void>()
+
+function avisarCambio() {
+  oyentes.forEach((oyente) => oyente())
+}
+
+function suscribir(oyente: () => void) {
+  oyentes.add(oyente)
+  return () => oyentes.delete(oyente)
+}
+
+/** true mientras haya algún envío a la API sin terminar. */
+export function useEnviando(): boolean {
+  return useSyncExternalStore(suscribir, () => enCurso.size > 0)
+}
+
+/** Envía datos a la API (POST/PUT) y muestra un mensaje de éxito o de error.
+ *  Si la misma operación ya está en camino, el clic repetido se ignora (devuelve null). */
 export async function enviar<T>(
   ruta: string,
   cuerpo: unknown,
   mensajeExito: string,
   metodo: "POST" | "PUT" | "DELETE" = "POST",
 ): Promise<T | null> {
+  const body = cuerpo === undefined ? undefined : JSON.stringify(cuerpo)
+  const clave = `${metodo} ${ruta} ${body ?? ""}`
+  if (enCurso.has(clave)) return null
+  enCurso.add(clave)
+  avisarCambio()
   try {
-    const respuesta = await api<T>(ruta, {
-      method: metodo,
-      body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo),
-    })
+    const respuesta = await api<T>(ruta, { method: metodo, body })
     toast.success(mensajeExito)
     return respuesta
   } catch (e) {
     // Los errores de las reglas de negocio se dejan más tiempo para poder leerlos
     toast.error(e instanceof Error ? e.message : "No se pudo completar la acción", { duration: 8000 })
     return null
+  } finally {
+    enCurso.delete(clave)
+    avisarCambio()
   }
 }
 

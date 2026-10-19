@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { CATEGORIAS } from "@/lib/catalogos"
-import { enviar, useDatos } from "@/lib/datos"
+import { enviar, useDatos, useEnviando } from "@/lib/datos"
 import { bs, fecha, fechaHora, horaDesbloqueo } from "@/lib/formato"
 import type { Aviso, CuentaSocio, Cuota, Medidor, Persona, Ruta, Socio } from "@/lib/tipos"
 
@@ -184,6 +184,7 @@ function DarBaja({ socio, alGuardar }: { socio: Socio; alGuardar: () => void }) 
 function CuentaPortal({ socio }: { socio: Socio }) {
   // 404 = el socio todavía no tiene cuenta en el portal
   const cuenta = useDatos<CuentaSocio>(`/socios/${socio.id_socio}/cuenta`)
+  const enviando = useEnviando()
   const [clave, setClave] = useState("")
   const existe = !cuenta.error && cuenta.datos
 
@@ -217,7 +218,7 @@ function CuentaPortal({ socio }: { socio: Socio }) {
             </span>
           )}
           <span className="text-muted-foreground">Último acceso: {fechaHora(cuenta.datos!.ultimo_acceso)}</span>
-          <Button size="sm" variant="outline" onClick={() => cambiarEstado(!cuenta.datos!.estado)}>
+          <Button size="sm" variant="outline" onClick={() => cambiarEstado(!cuenta.datos!.estado)} disabled={enviando}>
             {cuenta.datos!.estado ? "Bloquear" : "Habilitar"}
           </Button>
         </div>
@@ -237,6 +238,7 @@ function CuentaPortal({ socio }: { socio: Socio }) {
 
 function CreditoInscripcion({ socio }: { socio: Socio }) {
   const cuotas = useDatos<Cuota[]>(`/socios/${socio.id_socio}/credito`)
+  const enviando = useEnviando()
   const pagado = cuotas.datos?.filter((c) => c.estado === "PAGADA").reduce((t, c) => t + c.monto_pago, 0) ?? 0
 
   async function generar() {
@@ -270,7 +272,7 @@ function CreditoInscripcion({ socio }: { socio: Socio }) {
       ) : socio.rol_socio_id_rol_socio === 1 ? (
         <div className="flex items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">No tiene crédito de inscripción registrado.</p>
-          <Button size="sm" variant="outline" onClick={generar}>Generar 4 cuotas</Button>
+          <Button size="sm" variant="outline" onClick={generar} disabled={enviando}>Generar 4 cuotas</Button>
         </div>
       ) : (
         <p className="text-sm text-muted-foreground">Es Usuario (no afiliado): no paga inscripción.</p>

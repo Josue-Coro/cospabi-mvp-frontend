@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { consulta, enviar, useDatos } from "@/lib/datos"
+import { consulta, enviar, useDatos, useEnviando } from "@/lib/datos"
 import { fecha } from "@/lib/formato"
 import type { Persona } from "@/lib/tipos"
 
@@ -16,6 +16,7 @@ export default function Personas() {
   const [busqueda, setBusqueda] = useState("")
   const [q, setQ] = useState("")
   const personas = useDatos<Persona[]>(`/personas${consulta({ q })}`)
+  const enviando = useEnviando()
   const [editando, setEditando] = useState<Persona | "nuevo" | null>(null)
   const [form, setForm] = useState(VACIO)
 
@@ -82,7 +83,7 @@ export default function Personas() {
                 <TableCell><Estado valor={p.estado ? "ACTIVO" : "INACTIVO"} /></TableCell>
                 <TableCell className="text-right">
                   <Button variant="ghost" size="sm" onClick={() => abrir(p)}><PencilIcon /> Editar</Button>
-                  {p.estado && <Button variant="ghost" size="sm" onClick={() => darBaja(p)}>Dar de baja</Button>}
+                  {p.estado && <Button variant="ghost" size="sm" onClick={() => darBaja(p)} disabled={enviando}>Dar de baja</Button>}
                 </TableCell>
               </TableRow>
             ))}
