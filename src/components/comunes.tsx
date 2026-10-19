@@ -18,7 +18,7 @@ export function Encabezado({
   return (
     <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">{titulo}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-primary">{titulo}</h1>
         {descripcion && <p className="text-sm text-muted-foreground">{descripcion}</p>}
       </div>
       {children && <div className="flex flex-wrap items-center gap-2 print:hidden">{children}</div>}

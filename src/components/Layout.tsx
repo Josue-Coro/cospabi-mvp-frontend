@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { NavLink, Navigate, Outlet } from "react-router-dom"
-import { LogOutIcon, MenuIcon, XIcon } from "lucide-react"
+import { DropletsIcon, LogOutIcon, MenuIcon, XIcon } from "lucide-react"
 import { cn } from "cn"
 
 import { Button } from "@/components/ui/button"
@@ -18,25 +18,26 @@ export default function Layout() {
   const secciones = menuDelRol(usuario.rol)
 
   return (
-    <div className="min-h-svh bg-muted/40 print:bg-white">
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-background px-4 py-2.5 print:hidden">
+    <div className="min-h-svh bg-muted print:bg-white">
+      <header className="sticky top-0 z-30 flex items-center justify-between bg-primary px-4 py-2.5 text-primary-foreground print:hidden">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="hover:bg-secondary hover:text-secondary-foreground lg:hidden"
             onClick={() => setMenuAbierto(!menuAbierto)}
             aria-label="Abrir menú"
           >
             {menuAbierto ? <XIcon /> : <MenuIcon />}
           </Button>
-          <span className="font-semibold text-primary">COSPABI R.L.</span>
+          <DropletsIcon className="size-5" />
+          <span className="font-semibold">COSPABI R.L.</span>
         </div>
         <div className="flex items-center gap-3 text-sm">
-          <span className="hidden text-muted-foreground sm:inline">
+          <span className="hidden sm:inline">
             {usuario.nombre} {usuario.apellido} · {usuario.rol}
           </span>
-          <Button variant="outline" size="sm" onClick={cerrarSesion}>
+          <Button variant="secondary" size="sm" onClick={cerrarSesion}>
             <LogOutIcon /> Salir
           </Button>
         </div>
@@ -45,7 +46,7 @@ export default function Layout() {
       <div className="flex">
         <nav
           className={cn(
-            "fixed inset-y-0 top-[53px] z-20 w-60 shrink-0 overflow-y-auto border-r bg-background p-3 lg:sticky lg:block lg:h-[calc(100svh-53px)]",
+            "fixed inset-y-0 top-[53px] z-20 w-60 shrink-0 overflow-y-auto border-r border-sidebar-border bg-sidebar p-3 text-sidebar-foreground lg:sticky lg:block lg:h-[calc(100svh-53px)]",
             menuAbierto ? "block" : "hidden",
             "print:hidden",
           )}
@@ -53,7 +54,7 @@ export default function Layout() {
           {secciones.map((seccion) => (
             <div key={seccion.titulo} className="mb-3">
               {seccion.titulo && (
-                <p className="px-2 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                <p className="px-2 pb-1 text-xs font-semibold tracking-wide text-primary uppercase">
                   {seccion.titulo}
                 </p>
               )}
@@ -65,8 +66,10 @@ export default function Layout() {
                   onClick={() => setMenuAbierto(false)}
                   className={({ isActive }) =>
                     cn(
-                      "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted",
-                      isActive && "bg-primary/10 font-medium text-primary",
+                      "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm",
+                      isActive
+                        ? "bg-sidebar-primary font-medium text-sidebar-primary-foreground"
+                        : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                     )
                   }
                 >
