@@ -245,7 +245,9 @@ export function ReporteInscripcion() {
                         title={c.fecha_pago ? `Pagada el ${fechaHora(c.fecha_pago)}` : "Pendiente"}
                         className={cn(
                           "rounded px-1.5 py-0.5 text-xs",
-                          c.estado === "PAGADA" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800",
+                          c.estado === "PAGADA"
+                            ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
+                            : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
                         )}
                       >
                         {c.num_cuota}ª {c.periodo} · {c.estado === "PAGADA" ? "pagada" : "pendiente"}

@@ -32,7 +32,7 @@ export default function VistaFactura({ f }: { f: FacturaDetalle }) {
           <p>NIT: {f.emisor.nit}</p>
           <p>N° de factura: <b>{f.numero_factura}</b></p>
           <p className="max-w-56 break-all">CUF: {f.cuf}</p>
-          <p className="mt-1 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-700">{f.modalidad}</p>
+          <p className="mt-1 rounded bg-red-50 px-1.5 py-0.5 font-medium text-red-700 dark:bg-red-950/60 dark:text-red-300">{f.modalidad}</p>
         </div>
       </div>
 

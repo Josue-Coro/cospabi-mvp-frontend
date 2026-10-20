@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { ThemeProvider } from "next-themes"
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
 import Layout from "@/components/Layout"
@@ -67,7 +68,8 @@ const PANTALLAS: { ruta: string; roles: NombreRol[]; elemento: ReactNode }[] = [
 
 export default function App() {
   return (
-    <ProveedorSesion>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <ProveedorSesion>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -81,6 +83,7 @@ export default function App() {
         </Routes>
       </BrowserRouter>
       <Toaster position="top-right" richColors />
-    </ProveedorSesion>
+      </ProveedorSesion>
+    </ThemeProvider>
   )
 }

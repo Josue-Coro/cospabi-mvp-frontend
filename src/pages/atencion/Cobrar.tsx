@@ -32,7 +32,7 @@ export default function Cobrar() {
       <Encabezado titulo="Cobrar avisos" descripcion="Cobro en ventanilla con efectivo, QR o transferencia (HU13)." />
 
       {!caja.cargando && caja.error && (
-        <Panel className="mb-4 border-amber-300 bg-amber-50">
+        <Panel className="mb-4 border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/60">
           <p className="text-sm">
             Debe abrir una caja antes de cobrar. <Link to="/caja" className="font-medium text-primary underline">Ir a Caja</Link>
           </p>
@@ -40,7 +40,7 @@ export default function Cobrar() {
       )}
 
       {ultimoPago && (
-        <Panel className="mb-4 border-emerald-300 bg-emerald-50">
+        <Panel className="mb-4 border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/60">
           <p className="text-sm">
             Pago N° {ultimoPago.id_pago} registrado por {bs(ultimoPago.monto_pagado)}
             {ultimoPago.vuelto ? `, vuelto ${bs(ultimoPago.vuelto)}` : ""}.{" "}
@@ -237,7 +237,7 @@ function DialogoCobro({
               ) : <EstadoCarga cargando={detalle.cargando} error={detalle.error} />}
             </div>
 
-            {qr?.estado === "EXPIRADO" && <p className="text-sm text-amber-700">El QR venció. Genere uno nuevo.</p>}
+            {qr?.estado === "EXPIRADO" && <p className="text-sm text-amber-700 dark:text-amber-400">El QR venció. Genere uno nuevo.</p>}
 
             <Campo etiqueta="Método de pago">
               <Seleccion value={metodo} onChange={(e) => setMetodo(e.target.value)}>
@@ -251,7 +251,7 @@ function DialogoCobro({
               </Campo>
             )}
             {esQr && (
-              <p className="rounded-lg bg-sky-50 p-2.5 text-xs text-sky-900">
+              <p className="rounded-lg bg-sky-50 p-2.5 text-xs text-sky-900 dark:bg-sky-950 dark:text-sky-200">
                 Se genera un QR de Libélula para que el socio pague desde su banco. Si pide factura, la emite Libélula.
               </p>
             )}

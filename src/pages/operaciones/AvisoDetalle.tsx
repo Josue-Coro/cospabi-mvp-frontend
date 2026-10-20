@@ -116,13 +116,13 @@ export default function AvisoDetalle() {
         </table>
 
         {a.pago && (
-          <p className="mt-4 rounded-lg bg-emerald-50 p-2.5 text-sm">
+          <p className="mt-4 rounded-lg bg-emerald-50 p-2.5 text-sm dark:bg-emerald-950/60">
             Pagado el {fechaHora(a.pago.fecha_pago)} con {a.pago.metodo}
             {a.pago.forma_pago === "PORTAL" ? " desde el portal del socio" : " en ventanilla"} · pago N° {a.pago.id_pago}
           </p>
         )}
         {a.estado === "ANULADO" && (
-          <p className="mt-4 rounded-lg bg-zinc-100 p-2.5 text-sm">Anulado: {a.motivo_anulacion}</p>
+          <p className="mt-4 rounded-lg bg-zinc-100 p-2.5 text-sm dark:bg-zinc-800">Anulado: {a.motivo_anulacion}</p>
         )}
       </Panel>
 

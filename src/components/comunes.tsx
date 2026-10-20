@@ -62,20 +62,20 @@ export function Seleccion({ className, ...props }: ComponentProps<"select">) {
 }
 
 const COLORES_ESTADO: Record<string, string> = {
-  PENDIENTE: "bg-amber-100 text-amber-800",
-  PAGADO: "bg-emerald-100 text-emerald-800",
-  PAGADA: "bg-emerald-100 text-emerald-800",
-  APLICADO: "bg-emerald-100 text-emerald-800",
-  VIGENTE: "bg-emerald-100 text-emerald-800",
-  APROBADO: "bg-emerald-100 text-emerald-800",
-  VENCIDO: "bg-red-100 text-red-800",
-  ANULADO: "bg-zinc-200 text-zinc-700",
-  ANULADA: "bg-zinc-200 text-zinc-700",
-  ACTIVO: "bg-emerald-100 text-emerald-800",
-  INACTIVO: "bg-zinc-200 text-zinc-700",
-  BLOQUEADO: "bg-red-100 text-red-800",
-  ABIERTA: "bg-sky-100 text-sky-800",
-  CERRADA: "bg-zinc-200 text-zinc-700",
+  PENDIENTE: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+  PAGADO: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  PAGADA: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  APLICADO: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  VIGENTE: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  APROBADO: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  VENCIDO: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300",
+  ANULADO: "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  ANULADA: "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  ACTIVO: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+  INACTIVO: "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  BLOQUEADO: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300",
+  ABIERTA: "bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300",
+  CERRADA: "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
 }
 
 export function Estado({ valor }: { valor: string }) {

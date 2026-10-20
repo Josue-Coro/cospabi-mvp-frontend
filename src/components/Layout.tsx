@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { NavLink, Navigate, Outlet } from "react-router-dom"
-import { DropletsIcon, LogOutIcon, MenuIcon, XIcon } from "lucide-react"
+import { DropletsIcon, LogOutIcon, MenuIcon, MoonIcon, SunIcon, XIcon } from "lucide-react"
+import { useTheme } from "next-themes"
 import { cn } from "cn"
 
 import { Button } from "@/components/ui/button"
@@ -10,6 +11,7 @@ import { menuDelRol } from "@/lib/menu"
 /** Estructura de las páginas protegidas: exige sesión y muestra el menú según el rol. */
 export default function Layout() {
   const { usuario, cargando, cerrarSesion } = useSesion()
+  const { resolvedTheme, setTheme } = useTheme()
   const [menuAbierto, setMenuAbierto] = useState(false)
 
   if (cargando) return <p className="p-6 text-muted-foreground">Cargando...</p>
@@ -37,6 +39,15 @@ export default function Layout() {
           <span className="hidden sm:inline">
             {usuario.nombre} {usuario.apellido} · {usuario.rol}
           </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-secondary hover:text-secondary-foreground"
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            aria-label={resolvedTheme === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
+          >
+            {resolvedTheme === "dark" ? <SunIcon /> : <MoonIcon />}
+          </Button>
           <Button variant="secondary" size="sm" onClick={cerrarSesion}>
             <LogOutIcon /> Salir
           </Button>

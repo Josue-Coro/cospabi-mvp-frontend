@@ -35,12 +35,12 @@ export default function Lecturas() {
       <Panel className="mb-4">
         <div className="grid gap-3 sm:grid-cols-3">
           <Campo etiqueta="Ruta">
-            <Seleccion value={idRuta} onChange={(e) => setIdRuta(e.target.value)}>
+            <Seleccion className="h-11" value={idRuta} onChange={(e) => setIdRuta(e.target.value)}>
               {rutas.datos?.map((r) => <option key={r.id_ruta} value={r.id_ruta}>Ruta {r.ruta} - {r.descripcion}</option>)}
             </Seleccion>
           </Campo>
           <Campo etiqueta="Periodo">
-            <Seleccion value={idPeriodo} onChange={(e) => setIdPeriodo(e.target.value)}>
+            <Seleccion className="h-11" value={idPeriodo} onChange={(e) => setIdPeriodo(e.target.value)}>
               {periodos.datos && ordenarPeriodos(periodos.datos).map((p) => (
                 <option key={p.id_periodo} value={p.id_periodo}>{p.periodo}</option>
               ))}
@@ -86,7 +86,7 @@ function FilaLectura({ fila, idPeriodo, alGuardar }: { fila: FilaPlanilla; idPer
   }
 
   return (
-    <Panel className={fila.leido ? "bg-emerald-50/60" : ""}>
+    <Panel className={fila.leido ? "bg-emerald-50/60 dark:bg-emerald-950/40" : ""}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <p className="font-medium">{fila.codigo_fijo} · {fila.nombre_socio}</p>
@@ -95,7 +95,7 @@ function FilaLectura({ fila, idPeriodo, alGuardar }: { fila: FilaPlanilla; idPer
           </p>
         </div>
         {fila.leido && (
-          <p className="flex items-center gap-1 text-sm text-emerald-700">
+          <p className="flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-400">
             <CheckCircle2Icon className="size-4" /> {fila.lectura_actual} m³ · consumo {fila.consumo_m3} m³
           </p>
         )}
@@ -104,16 +104,16 @@ function FilaLectura({ fila, idPeriodo, alGuardar }: { fila: FilaPlanilla; idPer
         <div className="mt-3 grid gap-2 sm:grid-cols-[repeat(3,1fr)_auto] sm:items-end">
           {fila.lectura_anterior === null && (
             <Campo etiqueta="Lectura inicial">
-              <Input type="number" inputMode="numeric" min="0" value={inicial} onChange={(e) => setInicial(e.target.value)} placeholder="0" />
+              <Input className="h-11" type="number" inputMode="numeric" min="0" value={inicial} onChange={(e) => setInicial(e.target.value)} placeholder="0" />
             </Campo>
           )}
           <Campo etiqueta="Lectura actual (m³)" ayuda={consumo !== null ? `Consumo: ${consumo} m³` : undefined}>
-            <Input type="number" inputMode="numeric" min={anterior} value={actual} onChange={(e) => setActual(e.target.value)} />
+            <Input className="h-11" type="number" inputMode="numeric" min={anterior} value={actual} onChange={(e) => setActual(e.target.value)} />
           </Campo>
           <Campo etiqueta="Observación" ayuda="Obligatoria si el consumo es anormal">
-            <Input value={observacion} onChange={(e) => setObservacion(e.target.value)} placeholder="Casa cerrada, fuga..." />
+            <Input className="h-11" value={observacion} onChange={(e) => setObservacion(e.target.value)} placeholder="Casa cerrada, fuga..." />
           </Campo>
-          <Button onClick={guardar} disabled={actual === "" || guardando || (consumo !== null && consumo < 0)}>
+          <Button className="h-11" onClick={guardar} disabled={actual === "" || guardando || (consumo !== null && consumo < 0)}>
             {guardando ? "Guardando..." : "Guardar"}
           </Button>
         </div>
